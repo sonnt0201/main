@@ -1,3 +1,9 @@
-idf_component_register(SRCS "http_request_example_main.c"
-             #      "../lib/WifiConnect.c"
-                        INCLUDE_DIRS "." )
+idf_component_register(SRCS "main.c"
+                            "../lib/adc.c"
+                            "../lib/Timestamp.c"
+                            "../lib/WifiConnect.c"
+                            #"../lib/print_task.c"
+                           "../lib/http.c"
+                        INCLUDE_DIRS "." 
+                                    "../lib"
+                                    )

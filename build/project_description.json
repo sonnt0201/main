@@ -1,7 +1,7 @@
 {
     "version":            "1.1",
     "project_name":       "http_request",
-    "project_version":    "1",
+    "project_version":    "e92c574-dirty",
     "project_path":       "/home/mung/Desktop/Test_adc/http_request",
     "idf_path":           "/home/mung/esp/esp-idf",
     "build_dir":          "/home/mung/Desktop/Test_adc/http_request/build",
@@ -805,8 +805,8 @@
             "managed_reqs": [],
             "managed_priv_reqs": [ "protocol_examples_common" ],
             "file": "/home/mung/Desktop/Test_adc/http_request/build/esp-idf/main/libmain.a",
-            "sources": [ "/home/mung/Desktop/Test_adc/http_request/main/http_request_example_main.c" ],
-            "include_dirs": [ "." ]
+            "sources": [ "/home/mung/Desktop/Test_adc/http_request/main/main.c", "/home/mung/Desktop/Test_adc/http_request/lib/adc.c", "/home/mung/Desktop/Test_adc/http_request/lib/Timestamp.c", "/home/mung/Desktop/Test_adc/http_request/lib/WifiConnect.c", "/home/mung/Desktop/Test_adc/http_request/lib/http.c" ],
+            "include_dirs": [ ".", "../lib" ]
         },
         "mbedtls": {
             "alias": "idf::mbedtls",
@@ -2131,7 +2131,7 @@
             "priv_reqs": [ "protocol_examples_common" ],
             "managed_reqs": [],
             "managed_priv_reqs": [ "protocol_examples_common" ],
-            "include_dirs": [ "." ]
+            "include_dirs": [ ".", "../lib" ]
         },
         "protocol_examples_common": {
             "alias": "idf::protocol_examples_common",
