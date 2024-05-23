@@ -1,7 +1,13 @@
 {
-    "idf.adapterTargetName": "esp32",
-    "files.associations": {
-        "*.ejs": "html",
-        "protocol_examples_common.h": "c"
-    }
+  "C_Cpp.intelliSenseEngine": "default",
+  "files.associations": {
+    "freertos.h": "c",
+    "http.h": "c",
+    "wificonnect.h": "c",
+    "adc.h": "c",
+    "stdio.h": "c"
+  },
+  "idf.adapterTargetName": "esp32",
+  "idf.port": "/dev/ttyUSB0",
+  "idf.flashType": "UART"
 }

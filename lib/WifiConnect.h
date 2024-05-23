@@ -10,8 +10,8 @@
 extern "C" {
 #endif
 
-#define WIFI_SSID "Sv 2022"
-#define WIFI_PASS "@sv22022"
+#define WIFI_SSID "GocChienLuoc"
+#define WIFI_PASS "leuleuleu"
 
 void wifi_event_group_handler(void* arg, esp_event_base_t event_base,
                                 int32_t event_id, void* event_data);

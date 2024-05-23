@@ -1,9 +1,8 @@
+#pragma once
 #ifndef __HTTP_H_
 #define __HTTP_H_
 
 #include <string.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
 #include "esp_system.h"
 #include "esp_wifi.h"
 #include "esp_event.h"
@@ -16,27 +15,28 @@
 #include "lwip/netdb.h"
 #include "lwip/dns.h"
 #include "WifiConnect.h"
-
+#include "queueService.h"
+#include <cJSON.h>
 /* Constants for Wi-Fi connection */
 //#define WIFI_SSID "Sv 2022"
 //#define WIFI_PASS "@sv22022"
 
 /* Constants that aren't configurable in menuconfig */
-#define WEB_SERVER "192.168.1.83"
+#define WEB_SERVER "192.168.1.6"
 #define WEB_PORT "8080"
-#define WEB_PATH "/"
+#define WEB_PATH "/api/new-recordss"
 
 static const char *TAG = "example";
 
 /* Prepare the payload and headers */
-static const char *payload = "Thong tin da den server chua?";
+extern char *payload;
 static const char *REQUEST_FORMAT = "POST %s HTTP/1.1\r\n"
     "Host: %s:%s\r\n"
     "User-Agent: esp-idf/1.0 esp32\r\n"
-    "Content-Type: text/plain\r\n"
+    "Content-Type: application/json\r\n"
     "Content-Length: %d\r\n"
     "\r\n"
-    "%s";
+;
 
 
 void http_get_task(void *pvParameters);

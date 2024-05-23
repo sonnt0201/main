@@ -9,8 +9,7 @@
                 "${config:idf.espIdfPathWin}/components/**",
                 "${config:idf.espAdfPath}/components/**",
                 "${config:idf.espAdfPathWin}/components/**",
-                "${workspaceFolder}/**",
-                "/home/mung/esp/esp-idf/examples/common_components/protocol_examples_common/include"
+                "${workspaceFolder}/**"
             ],
             "browse": {
                 "path": [
@@ -22,17 +21,6 @@
                 ],
                 "limitSymbolsToIncludedHeaders": false
             }
-        },
-        {
-            "name": "path",
-            "includePath": [
-                "${workspaceFolder}/**"
-            ],
-            "defines": [],
-            "compilerPath": "/usr/bin/clang",
-            "cStandard": "c17",
-            "cppStandard": "c++14",
-            "intelliSenseMode": "linux-clang-x64"
         }
     ],
     "version": 4

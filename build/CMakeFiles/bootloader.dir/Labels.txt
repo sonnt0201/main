@@ -1,13 +1,13 @@
 # Target labels
  bootloader
 # Source files and their labels
-/home/mung/Desktop/Test_adc/http_request/build/CMakeFiles/bootloader
-/home/mung/Desktop/Test_adc/http_request/build/CMakeFiles/bootloader.rule
-/home/mung/Desktop/Test_adc/http_request/build/CMakeFiles/bootloader-complete.rule
-/home/mung/Desktop/Test_adc/http_request/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule
-/home/mung/Desktop/Test_adc/http_request/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule
-/home/mung/Desktop/Test_adc/http_request/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule
-/home/mung/Desktop/Test_adc/http_request/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule
-/home/mung/Desktop/Test_adc/http_request/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule
-/home/mung/Desktop/Test_adc/http_request/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule
-/home/mung/Desktop/Test_adc/http_request/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule
+/home/sonnguyen/Desktop/repos/main/build/CMakeFiles/bootloader
+/home/sonnguyen/Desktop/repos/main/build/CMakeFiles/bootloader.rule
+/home/sonnguyen/Desktop/repos/main/build/CMakeFiles/bootloader-complete.rule
+/home/sonnguyen/Desktop/repos/main/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule
+/home/sonnguyen/Desktop/repos/main/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule
+/home/sonnguyen/Desktop/repos/main/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule
+/home/sonnguyen/Desktop/repos/main/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule
+/home/sonnguyen/Desktop/repos/main/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule
+/home/sonnguyen/Desktop/repos/main/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule
+/home/sonnguyen/Desktop/repos/main/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule
