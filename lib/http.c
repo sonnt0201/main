@@ -8,23 +8,25 @@ const struct addrinfo hints = {
     .ai_socktype = SOCK_STREAM,
 };
 // Function to copy the string
-char *copyString(char s[], int len);
-char *createJsonBody(char *timestamp, char *pir_id, char *pirs_vol);
 
+
+// hàm ok, đã tự giải phóng các biến nội bộ.
 void sendToServer(char *payload)
 
 {
-   
+
     struct addrinfo *res;
     struct in_addr *addr;
     int s, r;
-    char request[700] = "";
+
+    char *request = malloc(700);
+
     int err = getaddrinfo(WEB_SERVER, WEB_PORT, &hints, &res);
     if (err != 0 || res == NULL)
     {
         ESP_LOGE(TAG, "DNS lookup failed err=%d res=%p", err, res);
         // vTaskDelay(10 / portTICK_PERIOD_MS);
-       
+
         //  close(s);
         return;
     }
@@ -36,10 +38,16 @@ void sendToServer(char *payload)
     if (s < 0)
     {
         ESP_LOGE(TAG, "... Failed to allocate socket.");
-     
-         close(s);
 
-            freeaddrinfo(res);
+        close(s);
+
+        // if (payload != NULL)
+        // {
+        //     free(payload);
+        //     payload = NULL;
+        // }
+
+        freeaddrinfo(res);
         // vTaskDelay(1 / portTICK_PERIOD_MS);
         return;
     }
@@ -47,14 +55,21 @@ void sendToServer(char *payload)
     if (connect(s, res->ai_addr, res->ai_addrlen) != 0)
     {
         ESP_LOGE(TAG, "... socket connect failed errno=%d", errno);
+        //  vTaskDelay(1 / portTICK_PERIOD_MS);
         close(s);
+
         freeaddrinfo(res);
-        // vTaskDelay(1 / portTICK_PERIOD_MS);
-         close(s);
+
+        if (request != NULL)
+        {
+            free(request);
+            request = NULL;
+        }
+
         return;
     }
 
-    char *body = strdup(payload);
+    char *body = payload;
 
     int request_len = sprintf(request, REQUEST_FORMAT, WEB_PATH, WEB_SERVER, WEB_PORT, strlen(request) + strlen(body));
 
@@ -63,17 +78,42 @@ void sendToServer(char *payload)
     if (write(s, request_w_body, strlen(request_w_body)) < 0)
     {
         ESP_LOGE(TAG, "... socket send failed");
+
         close(s);
-        free(body);
+
+        // try to free all;
+        // if (body != NULL)
+        // {
+        //     free(body);
+        //     body = NULL;
+        // }
         freeaddrinfo(res);
-        free(request);
-        // vTaskDelay(1 / portTICK_PERIOD_MS);
+
+        if (request != NULL)
+        {
+            free(request);
+            request = NULL;
+        }
+
+        vTaskDelay(2 / portTICK_PERIOD_MS);
         return;
     }
 
-
-    close (s);
+    vTaskDelay(1 / portTICK_PERIOD_MS);
+    close(s);
     freeaddrinfo(res);
+
+    // if (body != NULL)
+    // {
+    //     free(body);
+    //     body = NULL;
+    // }
+
+    if (request != NULL)
+    {
+        free(request);
+        request = NULL;
+    }
 };
 
 void http_get_task(void *pvParameters)
@@ -169,9 +209,7 @@ void http_get_task(void *pvParameters)
         sendToServer(payload);
         vTaskDelay(pdMS_TO_TICKS(1));
 
-        // free(payload);
-        // free(timestamp);
-        // free(pirs_vol);
+        
 
         payload = "";
         // if (timestamp) free(timestamp);
@@ -182,18 +220,21 @@ void http_get_task(void *pvParameters)
     }
 }
 
-char *createJsonBody(char *timestamp, char *pir_id, char *pirs_vol)
+
+// đã giải phóng bộ nhớ cho mọi biến nội bộ.
+char *createJsonBody(int timestamp, char *pir_id, char *pirs_vol)
 {
-    printf("Creating json with timestamp: %s\n", timestamp);
+    printf("Creating json with %s timestamp: %d\n", pir_id, timestamp);
 
     cJSON *root = cJSON_CreateObject();
-    cJSON_AddStringToObject(root, "timestamp", timestamp);
+    cJSON_AddNumberToObject(root, "timestamp", timestamp);
+    // cJSON_AddStringToObject(root, "timestamp", timestamp);
     cJSON_AddStringToObject(root, "pir", pir_id);
     cJSON_AddStringToObject(root, "vol", pirs_vol);
 
     char *out = cJSON_Print(root);
     cJSON_Delete(root);
-    return out;
+    return (char*)out;
 }
 
 // Function to copy the string

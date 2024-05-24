@@ -22,9 +22,9 @@
 //#define WIFI_PASS "@sv22022"
 
 /* Constants that aren't configurable in menuconfig */
-#define WEB_SERVER "192.168.1.6"
+#define WEB_SERVER "192.168.1.3"
 #define WEB_PORT "8080"
-#define WEB_PATH "/api/new-recordss"
+#define WEB_PATH "/api/new-record"
 
 static const char *TAG = "example";
 
@@ -41,7 +41,9 @@ static const char *REQUEST_FORMAT = "POST %s HTTP/1.1\r\n"
 
 void http_get_task(void *pvParameters);
 
-
+void sendToServer(char *payload);
+char *copyString(char s[], int len);
+char *createJsonBody(int timestamp, char *pir_id, char *pirs_vol);
 #endif // __HTTP_H_
 
 
