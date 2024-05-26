@@ -3,6 +3,8 @@
 // Task handler function
 #include "http.h"
 
+QueueHandle_t queue;
+
 void adc_task(void *pvParameters)
 {
 
@@ -49,6 +51,9 @@ void adc_task(void *pvParameters)
         // char* StrPir3 = malloc(600);
         // char* StrPir4 = malloc(600);
 
+        if (queue == NULL)
+            xQueueCreate(ITEMS_NUM, ITEM_SIZE);
+
         time_t timestamp = get_current_timestamp();
         for (int i = 0; i < 100; i++)
         {
@@ -76,39 +81,46 @@ void adc_task(void *pvParameters)
         // hàm sendToServer không giải phóng bộ nhớ cho tham số truyền vào. chỉ giải phóng bộ nhớ cho các biến nội bộ
         // sendToServer("hello from client !");
 
+        // char begin[1] = Q_BEGIN_VAL;
+        // xQueueSend(queue, begin, (TickType_t) 0);
+
 
         // phải giải phóng, đã giải phóng ở dòng dưới
         char *jsonStr0 = createJsonBody(timestamp, "0", StrPir0);
-        sendToServer(jsonStr0);
-         free(jsonStr0);
+        // sendToServer(jsonStr0);
+        xQueueSend(queue, (void *)jsonStr0, (TickType_t)0);
+        free(jsonStr0);
         jsonStr0 = NULL;
 
         char *jsonStr1 = createJsonBody(timestamp, "1", StrPir1);
-        sendToServer(jsonStr1);
-         free(jsonStr1);
+        // sendToServer(jsonStr1);
+        xQueueSend(queue, (void *)jsonStr1, (TickType_t)0);
+
+        free(jsonStr1);
         jsonStr1 = NULL;
 
-
         char *jsonStr2 = createJsonBody(timestamp, "2", StrPir2);
-        sendToServer(jsonStr2);
-         free(jsonStr2);
+        // sendToServer(jsonStr2);
+         xQueueSend(queue, (void *)jsonStr2, (TickType_t)0);
+        free(jsonStr2);
         jsonStr2 = NULL;
 
-         char *jsonStr3 = createJsonBody(timestamp, "3", StrPir3);
-        sendToServer(jsonStr3);
+        char *jsonStr3 = createJsonBody(timestamp, "3", StrPir3);
+        // sendToServer(jsonStr3);
+         xQueueSend(queue, (void *)jsonStr3, (TickType_t)0);
         free(jsonStr3);
         jsonStr3 = NULL;
 
-
-         char *jsonStr4 = createJsonBody(timestamp, "4", StrPir4);
-        sendToServer(jsonStr4);
+        char *jsonStr4 = createJsonBody(timestamp, "4", StrPir4);
+        // sendToServer(jsonStr4);
+         xQueueSend(queue, (void *)jsonStr4, (TickType_t)0);
         free(jsonStr4);
         jsonStr4 = NULL;
         // if (jsonStr != NULL)
         // printf("%s\n", jsonStr);
 
         // giải phóng
-       
+
         // sendToServer(jsonStr);
 
         // if (time != NULL)

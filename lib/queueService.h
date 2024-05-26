@@ -8,8 +8,7 @@
 #include "freertos/queue.h"
 
 // #pragma once 
-#define Q_BEGIN_VAL "begin"
-#define Q_END_VAL "end"
+#define Q_BEGIN_VAL "$"
 #define Q_BEGIN 0
 #define Q_TIMESTAMP 1
 #define Q_PIR0 2

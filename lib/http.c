@@ -124,101 +124,19 @@ void http_get_task(void *pvParameters)
     if (!queue)
         queue = xQueueCreate(ITEMS_NUM, ITEM_SIZE);
 
-    payload = "";
-    // ESP_ERROR_CHECK(nvs_flash_init());
+   
 
-    char *timestamp = "";
-    char *pirs_vol = "";
-    char *pir_id = "0";
-    u8_t q_count = 0;
-
+    char rxbuff[700];
+   
     while (1)
     {
+        if (xQueueReceive(queue, &rxbuff, (TickType_t)1)) {
+            sendToServer(rxbuff);
+        };
+    };
 
-        char rxbuff[ITEM_SIZE];
-
-        if (xQueueReceive(queue, rxbuff, (TickType_t)1) == pdFALSE)
-        {
-            // vTaskDelay(pdMS_TO_TICKS(10));
-            continue;
-        }
-
-        q_count++;
-
-        // printf("Received from queue, rxbuff: %s, q_count: %d\n", rxbuff, q_count);
-        // printf("Current pirs_vol[0]: "); printf(pirs_vol[0]); printf("\n");
-
-        if (strcmp(rxbuff, Q_BEGIN_VAL) == 0)
-        {
-            q_count = Q_BEGIN;
-            payload = "";
-            continue;
-        }
-
-        if (q_count == Q_TIMESTAMP)
-        {
-
-            //    if (strcmp(rxbuff, Q_END_VAL) != 0) timestamp = rxbuff;
-            timestamp = copyString(rxbuff, strlen(rxbuff));
-
-            continue;
-        }
-
-        if (q_count == Q_PIR0)
-        {
-            // if (strcmp(rxbuff, Q_END_VAL) != 0) pirs_vol[0] = rxbuff;
-            pir_id = "0";
-            pirs_vol = copyString(rxbuff, strlen(rxbuff));
-        }
-
-        if (q_count == Q_PIR1)
-        {
-            pir_id = "1";
-            // if (strcmp(rxbuff, Q_END_VAL) != 0) pirs_vol[1] = rxbuff;
-            pirs_vol = copyString(rxbuff, strlen(rxbuff));
-        }
-
-        if (q_count == Q_PIR2)
-        {
-            pir_id = "2";
-            // if (strcmp(rxbuff, Q_END_VAL) != 0) pirs_vol[2] = rxbuff;
-            pirs_vol = copyString(rxbuff, strlen(rxbuff));
-        }
-
-        if (q_count == Q_PIR3)
-        {
-            pir_id = "3";
-            // if (strcmp(rxbuff, Q_END_VAL) != 0) pirs_vol[3] = rxbuff;
-            pirs_vol = copyString(rxbuff, strlen(rxbuff));
-        }
-
-        if (q_count == Q_PIR4)
-        {
-            pir_id = "4";
-            // if (strcmp(rxbuff, Q_END_VAL) != 0) pirs_vol[4] = rxbuff;
-            pirs_vol = copyString(rxbuff, strlen(rxbuff));
-            ;
-        }
-
-        payload = createJsonBody(timestamp, pir_id, pirs_vol);
-        // payload = copyString(pirs_vol, strlen(pirs_vol));
-        printf("body: \n ");
-        // printf(payload);
-        printf("\nConnecting using socket ... \n");
-
-        sendToServer(payload);
-        vTaskDelay(pdMS_TO_TICKS(1));
-
-        
-
-        payload = "";
-        // if (timestamp) free(timestamp);
-        if (pirs_vol)
-            free(pirs_vol);
-        pirs_vol = "";
-        // ESP_LOGI(TAG, "Starting again!");
-    }
 }
+
 
 
 // đã giải phóng bộ nhớ cho mọi biến nội bộ.
