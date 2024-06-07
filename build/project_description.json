@@ -1,7 +1,7 @@
 {
     "version":            "1.1",
     "project_name":       "http_request",
-    "project_version":    "fda8ec0-dirty",
+    "project_version":    "879cc14-dirty",
     "project_path":       "/home/sonnguyen/Desktop/repos/main",
     "idf_path":           "/home/sonnguyen/esp/v5.2.1/esp-idf",
     "build_dir":          "/home/sonnguyen/Desktop/repos/main/build",

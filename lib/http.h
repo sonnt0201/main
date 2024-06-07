@@ -22,7 +22,7 @@
 //#define WIFI_PASS "@sv22022"
 
 /* Constants that aren't configurable in menuconfig */
-#define WEB_SERVER "192.168.242.42"
+#define WEB_SERVER "192.168.149.42"
 #define WEB_PORT "8080"
 #define WEB_PATH "/api/new-record"
 
