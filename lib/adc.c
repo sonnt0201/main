@@ -5,6 +5,8 @@
 
 QueueHandle_t queue;
 
+
+
 void adc_task(void *pvParameters)
 {
 
@@ -42,6 +44,8 @@ void adc_task(void *pvParameters)
     // memset(StrPir3, 0, 600);
     // memset(StrPir4, 0, 600);
 
+    
+
     TickType_t GetTick = xTaskGetTickCount();
     while (1)
     {
@@ -60,12 +64,18 @@ void adc_task(void *pvParameters)
             int raw_data0 = adc1_get_raw(ADC1_CHANNEL_3);
             sprintf(&StrPir0[i * 5], "%04d%c", raw_data0, (i != 99 ? '_' : '\0'));
             int raw_data1 = adc1_get_raw(ADC1_CHANNEL_4);
+
+            
+
             sprintf(&StrPir1[i * 5], "%04d%c", raw_data1, (i != 99 ? '_' : '\0'));
             int raw_data2 = adc1_get_raw(ADC1_CHANNEL_5);
             sprintf(&StrPir2[i * 5], "%04d%c", raw_data2, (i != 99 ? '_' : '\0'));
             int raw_data3 = adc1_get_raw(ADC1_CHANNEL_6);
             sprintf(&StrPir3[i * 5], "%04d%c", raw_data3, (i != 99 ? '_' : '\0'));
             int raw_data4 = adc1_get_raw(ADC1_CHANNEL_7);
+
+            
+
             sprintf(&StrPir4[i * 5], "%04d%c", raw_data4, (i != 99 ? '_' : '\0'));
             // Delay for 10 ms
 
