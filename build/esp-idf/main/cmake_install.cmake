@@ -1,4 +1,4 @@
-# Install script for directory: /home/sonnguyen/Desktop/repos/main/main
+# Install script for directory: /home/sonnguyen/Desktop/repos/pir-client-legacy/main/main
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

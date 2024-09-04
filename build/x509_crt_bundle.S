@@ -1,4 +1,4 @@
-/* * Data converted from /home/sonnguyen/Desktop/repos/main/build/esp-idf/mbedtls/x509_crt_bundle
+/* * Data converted from /home/sonnguyen/Desktop/repos/pir-client-legacy/main/build/esp-idf/mbedtls/x509_crt_bundle
  */
 .data
 .section .rodata.embedded

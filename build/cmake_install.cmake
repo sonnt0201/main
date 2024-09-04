@@ -1,4 +1,4 @@
-# Install script for directory: /home/sonnguyen/Desktop/repos/main
+# Install script for directory: /home/sonnguyen/Desktop/repos/pir-client-legacy/main
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -39,7 +39,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/home/sonnguyen/Desktop/repos/main/build/esp-idf/cmake_install.cmake")
+  include("/home/sonnguyen/Desktop/repos/pir-client-legacy/main/build/esp-idf/cmake_install.cmake")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/sonnguyen/Desktop/repos/main/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/sonnguyen/Desktop/repos/pir-client-legacy/main/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

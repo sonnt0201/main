@@ -22,7 +22,7 @@
 //#define WIFI_PASS "@sv22022"
 
 /* Constants that aren't configurable in menuconfig */
-#define WEB_SERVER "192.168.1.8"
+#define WEB_SERVER "192.168.45.42"
 #define WEB_PORT "8080"
 #define WEB_PATH "/api/new-record"
 
@@ -31,7 +31,7 @@ static const char *TAG = "example";
 /* Prepare the payload and headers */
 extern char *payload;
 static const char *REQUEST_FORMAT = "POST %s HTTP/1.1\r\n"
-    "Host: %s:%s\r\n"
+        "Host: %s:%s\r\n"
     "User-Agent: esp-idf/1.0 esp32\r\n"
     "Content-Type: application/json\r\n"
     "Content-Length: %d\r\n"
