@@ -1,7 +1,6 @@
 {
-    "idf.adapterTargetName": "esp32",
-    "files.associations": {
-        "*.ejs": "html",
-        "protocol_examples_common.h": "c"
-    }
+  "C_Cpp.intelliSenseEngine": "default",
+  "idf.flashType": "UART",
+  "idf.port": "/dev/ttyUSB0",
+  "idf.adapterTargetName": "esp32"
 }

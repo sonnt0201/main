@@ -1,79 +1,168 @@
 #include "http.h"
+#include <esp_http_client.h>
 
-void http_get_task(void *pvParameters)
+char *payload;
+// connect_to_wifi();
+const struct addrinfo hints = {
+    .ai_family = AF_INET,
+    .ai_socktype = SOCK_STREAM,
+};
+// Function to copy the string
+
+
+// hàm ok, đã tự giải phóng các biến nội bộ.
+void sendToServer(char *payload)
+
 {
-    ESP_ERROR_CHECK(nvs_flash_init());
-    //connect_to_wifi();
-    const struct addrinfo hints = {
-        .ai_family = AF_INET,
-        .ai_socktype = SOCK_STREAM,
-    };
+
     struct addrinfo *res;
     struct in_addr *addr;
     int s, r;
-    char recv_buf[64];
 
-    while(1) {
-        int err = getaddrinfo(WEB_SERVER, WEB_PORT, &hints, &res);
-        if(err != 0 || res == NULL) {
-            ESP_LOGE(TAG, "DNS lookup failed err=%d res=%p", err, res);
-            vTaskDelay(1000 / portTICK_PERIOD_MS);
-            continue;
-        }
+    char *request = malloc(700);
 
-        addr = &((struct sockaddr_in *)res->ai_addr)->sin_addr;
-        ESP_LOGI(TAG, "DNS lookup succeeded. IP=%s", inet_ntoa(*addr));
+    int err = getaddrinfo(WEB_SERVER, WEB_PORT, &hints, &res);
+    if (err != 0 || res == NULL)
+    {
+        ESP_LOGE(TAG, "DNS lookup failed err=%d res=%p", err, res);
+        // vTaskDelay(10 / portTICK_PERIOD_MS);
 
-        s = socket(res->ai_family, res->ai_socktype, 0);
-        if(s < 0) {
-            ESP_LOGE(TAG, "... Failed to allocate socket.");
-            freeaddrinfo(res);
-            vTaskDelay(1000 / portTICK_PERIOD_MS);
-            continue;
-        }
-
-        if(connect(s, res->ai_addr, res->ai_addrlen) != 0) {
-            ESP_LOGE(TAG, "... socket connect failed errno=%d", errno);
-            close(s);
-            freeaddrinfo(res);
-            vTaskDelay(4000 / portTICK_PERIOD_MS);
-            continue;
-        }
-
-        char request[200];
-        int request_len = sprintf(request, REQUEST_FORMAT, WEB_PATH, WEB_SERVER, WEB_PORT, strlen(payload), payload);
-
-        if (write(s, request, request_len) < 0) {
-            ESP_LOGE(TAG, "... socket send failed");
-            close(s);
-            vTaskDelay(4000 / portTICK_PERIOD_MS);
-            continue;
-        }
-        ESP_LOGI(TAG, "... socket send success");
-
-        struct timeval receiving_timeout;
-        receiving_timeout.tv_sec = 5;
-        receiving_timeout.tv_usec = 0;
-        if (setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, &receiving_timeout,
-                sizeof(receiving_timeout)) < 0) {
-            ESP_LOGE(TAG, "... failed to set socket receiving timeout");
-            close(s);
-            vTaskDelay(4000 / portTICK_PERIOD_MS);
-            continue;
-        }
-
-        /* Read HTTP response */
-        do {
-            bzero(recv_buf, sizeof(recv_buf));
-            r = read(s, recv_buf, sizeof(recv_buf)-1);
-            for(int i = 0; i < r; i++) {
-                putchar(recv_buf[i]);
-            }
-        } while(r > 0);
-
-        ESP_LOGI(TAG, "... done reading from socket. Last read return=%d errno=%d.", r, errno);
-        close(s);
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
-        ESP_LOGI(TAG, "Starting again!");
+        //  close(s);
+        return;
     }
+
+    addr = &((struct sockaddr_in *)res->ai_addr)->sin_addr;
+    // ESP_LOGI(TAG, "DNS lookup succeeded. IP=%s", inet_ntoa(*addr));
+
+    s = socket(res->ai_family, res->ai_socktype, 0);
+    if (s < 0)
+    {
+        ESP_LOGE(TAG, "... Failed to allocate socket.");
+
+        close(s);
+
+        // if (payload != NULL)
+        // {
+        //     free(payload);
+        //     payload = NULL;
+        // }
+
+        freeaddrinfo(res);
+        // vTaskDelay(1 / portTICK_PERIOD_MS);
+        return;
+    }
+
+    if (connect(s, res->ai_addr, res->ai_addrlen) != 0)
+    {
+        ESP_LOGE(TAG, "... socket connect failed errno=%d", errno);
+        //  vTaskDelay(1 / portTICK_PERIOD_MS);
+        close(s);
+
+        freeaddrinfo(res);
+
+        if (request != NULL)
+        {
+            free(request);
+            request = NULL;
+        }
+
+        return;
+    }
+
+    char *body = payload;
+
+    int request_len = sprintf(request, REQUEST_FORMAT, WEB_PATH, WEB_SERVER, WEB_PORT, strlen(request) + strlen(body));
+
+    char *request_w_body = strcat(request, body);
+
+    if (write(s, request_w_body, strlen(request_w_body)) < 0)
+    {
+        ESP_LOGE(TAG, "... socket send failed");
+
+        close(s);
+
+        // try to free all;
+        // if (body != NULL)
+        // {
+        //     free(body);
+        //     body = NULL;
+        // }
+        freeaddrinfo(res);
+
+        if (request != NULL)
+        {
+            free(request);
+            request = NULL;
+        }
+
+        vTaskDelay(2 / portTICK_PERIOD_MS);
+        return;
+    }
+
+    vTaskDelay(1 / portTICK_PERIOD_MS);
+    close(s);
+    freeaddrinfo(res);
+
+    // if (body != NULL)
+    // {
+    //     free(body);
+    //     body = NULL;
+    // }
+
+    if (request != NULL)
+    {
+        free(request);
+        request = NULL;
+    }
+};
+
+void http_get_task(void *pvParameters)
+{
+
+    // char txbuff[4000];
+
+    if (!queue)
+        queue = xQueueCreate(ITEMS_NUM, ITEM_SIZE);
+
+   
+
+    char rxbuff[700];
+   
+    while (1)
+    {
+        if (xQueueReceive(queue, &rxbuff, (TickType_t)1)) {
+            sendToServer(rxbuff);
+        };
+    };
+
+}
+
+
+
+// đã giải phóng bộ nhớ cho mọi biến nội bộ.
+char *createJsonBody(int timestamp, char *pir_id, char *pirs_vol)
+{
+    printf("Creating json with %s timestamp: %d\n", pir_id, timestamp);
+
+    cJSON *root = cJSON_CreateObject();
+    cJSON_AddNumberToObject(root, "timestamp", timestamp);
+    // cJSON_AddStringToObject(root, "timestamp", timestamp);
+    cJSON_AddStringToObject(root, "pir", pir_id);
+    cJSON_AddStringToObject(root, "vol", pirs_vol);
+
+    char *out = cJSON_Print(root);
+    cJSON_Delete(root);
+    return (char*)out;
+}
+
+// Function to copy the string
+char *copyString(char s[], int len)
+{
+    //     char *s2;
+
+    //     s2 = (char *)malloc(len + 1);
+    //     strcpy(s2, s);
+    //     return (char *)s2;
+
+    return strdup(s);
 }
